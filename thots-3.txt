@@ -1,0 +1,28 @@
+nodejs - runtime which usually uses v8 to run js on a server outside the browser
+
+to exec a js file - node <filename>
+
+
+npm - node package manager 
+package manager for node (similar to composer)
+to init a node proj - npm init
+
+package.json - contains all necessary package depedencies, also scripts and configs
+package-lock.json - generated on npm install - exact version and the tree of depedencies
+similar to composer.json, composer-lock.json
+
+npx - to run commands of certain packages ig?
+nvm - node version manager
+
+express - a framework for building APIs, this is also installed as a depedency
+ts - also a package, and you need to install ts versions of each package - like typescript/express 
+    is used to write express in ts
+typeorm / prismaorm - orm like eloquent to query db
+node_modules - contains all packages
+
+deployment - ig a pipeline runs tsc and gets a js version of the entire codebase and uploads it to the server 
+
+
+alternatives
+node - bun, deno
+npm - pnpm, yarn, bun

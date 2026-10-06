@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Order tracking</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 16px; }
+        input, button { font: inherit; padding: 4px 8px; }
+        #log { background: #f4f4f4; padding: 12px; min-height: 120px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Order tracking</h1>
+
+    <form id="new-order">
+        <input name="item" placeholder="item" value="Keyboard" required>
+        <input name="quantity" type="number" min="1" max="100" value="1" required>
+        <input name="email" type="email" placeholder="email" value="ada@example.com" required>
+        <button>Place order</button>
+    </form>
+
+    <p>
+        <input id="order-id" placeholder="or paste an order id" size="40">
+        <button id="track">Track</button>
+    </p>
+
+    <div id="log"></div>
+
+    <!-- served by socket.io itself -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // websocket only: no long-polling fallback, which also makes it work behind the cluster
+        const socket = io({ transports: ["websocket"] });
+        const log = msg => (document.getElementById("log").textContent += `${new Date().toLocaleTimeString()}  ${msg}\n`);
+
+        socket.on("connect", () => log(`connected (${socket.id})`));
+        socket.on("disconnect", () => log("disconnected"));
+        socket.on("order:status", ({ orderId, status }) => log(`${orderId.slice(0, 8)}  →  ${status}`));
+        socket.on("order:error", ({ message }) => log(`error: ${message}`));
+
+        function track(orderId) {
+            log(`tracking ${orderId}`);
+            socket.emit("order:subscribe", orderId);
+        }
+
+        document.getElementById("track").onclick = () => track(document.getElementById("order-id").value.trim());
+
+        document.getElementById("new-order").onsubmit = async e => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const res = await fetch("/api/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ item: form.get("item"), quantity: Number(form.get("quantity")), email: form.get("email") }),
+            });
+            const body = await res.json();
+            if (!res.ok) return log(`error: ${JSON.stringify(body)}`);
+            track(body.data.id);
+        };
+    </script>
+</body>
+</html>

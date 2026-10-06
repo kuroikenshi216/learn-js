@@ -1,0 +1,179 @@
+ts 
+- brings types to js 
+- kinda like a superset of js
+
+since js is a dynamically typed language ts provides type safety to js vars, classes, interfaces and so on
+basically gives the benefits of a statically typed language while also having flexibility to switch to normal js
+
+all js is ts but not all ts is js - duh!
+
+use tsc to transpile (not sure if thats correct term) ts code to js and run it
+so ts is like a static code checker not an actual compiler / runtime kinda system
+
+ts is just an npm package so you need to install it in a node proj to use it
+a tsconfig.json file can be used to tweak the settings
+
+basic syntax is kinda like php - append :<type> to vars, classes, interfaces
+no need to add this to every var it can infer
+
+variables - 
+let name: string = "Aakash";
+
+
+objects -
+interface User {
+    name: string,
+    age: number
+}
+const user: User = {
+    name: "Aakash",
+    age: 18,
+}
+
+can also be used with classes - like it can match the shape of the object
+
+annotate fn arguments and return types in similar manner
+
+unions => can be one of the mentioned types or values 
+
+interface and type mostly do the same thing and often can be used interchably
+the only thing is interface can be extended and also merged when redeclared
+whereas types cannot be redeclared or reinitialized
+
+generics - i understand the idea is to declare a generic abstract data type which can be utilized by populating it with a specific data type while using it
+
+you can do stuff like 
+
+if (typeof var == "string") string operations
+if (typeof var == "number") number operations
+
+if you dont do this and do something generic ts will complain
+
+in classes 
+- you get public protected private - which is actually missing in js
+- readonly keyword
+
+
+
+array of types - string[], number[]
+any - basically normal js - try to avoid unless really needed cos it strips all the benefits of using ts
+number? - can be either a number or null (or undefined ig) nothing else - similar to php
+
+
+
+----------
+
+
+Cleaned-up version of your notes
+
+If I were turning your notes into a compact revision sheet:
+
+TypeScript
+──────────
+• Superset of JavaScript.
+• Adds static type checking and compile-time features.
+• Valid JS is generally valid TS.
+• TS-specific syntax must be compiled/removed before normal JS execution.
+• TypeScript itself has no runtime; Node/V8 execute the resulting JS.
+• tsc = TypeScript Compiler.
+• tsconfig.json = compiler/project configuration.
+
+Types
+─────
+• string
+• number
+• boolean
+• bigint
+• symbol
+• null
+• undefined
+• arrays / objects are not primitives
+• any = disables most type checking
+• unknown = safer alternative when type is genuinely unknown
+
+Annotations
+───────────
+let name: string = "Aakash";
+
+Types can be inferred:
+let name = "Aakash";
+
+Objects
+───────
+interface User {
+    name: string;
+    age: number;
+}
+
+const user: User = {...};
+
+Functions
+─────────
+function add(a: number, b: number): number {
+    return a + b;
+}
+
+Unions
+──────
+string | number
+"pending" | "completed"
+
+Narrowing
+─────────
+if (typeof value === "string") {
+    // value is string here
+}
+
+Interfaces
+──────────
+• Describe object contracts/shapes.
+• Can extend.
+• Can declaration-merge.
+
+Type aliases
+────────────
+• Can describe object shapes, unions, tuples, etc.
+• Cannot be redeclared/merged like interfaces.
+• Can compose using intersections (&).
+
+Generics
+────────
+function identity<T>(value: T): T
+
+• Type parameter that preserves relationships between types.
+
+Classes
+───────
+• public
+• protected
+• private
+• readonly
+• constructor
+• no traditional destructor
+
+Arrays
+──────
+string[]
+number[]
+Array<string>
+
+Optional
+────────
+age?: number
+→ optional / potentially undefined
+
+Nullable
+────────
+age: number | null
+
+Both
+────
+age: number | null | undefined
+
+The three things I'd especially fix in your mental model are:
+
+TS types disappear at runtime — they're primarily compile-time.
+? means optional, not nullable.
+interface vs type is more nuanced than "interface extends, type doesn't."
+
+Everything else is mostly in place.

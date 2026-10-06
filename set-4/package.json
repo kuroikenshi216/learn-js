@@ -1,0 +1,43 @@
+{
+    "name": "set-4",
+    "version": "1.0.0",
+    "private": true,
+    "type": "commonjs",
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "dev:worker": "tsx watch src/worker.ts",
+        "dev:cluster": "tsx src/cluster.ts",
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "start:worker": "node dist/worker.js",
+        "start:cluster": "node dist/cluster.js",
+        "typeorm": "tsx ./node_modules/typeorm/cli.js",
+        "migration:generate": "npm run typeorm -- migration:generate -d src/database/data-source.ts",
+        "migration:run": "npm run typeorm -- migration:run -d src/database/data-source.ts",
+        "migration:revert": "npm run typeorm -- migration:revert -d src/database/data-source.ts",
+        "analyze": "tsx src/tools/file-analyzer/analyze.ts",
+        "watch:order": "tsx src/scripts/watch-order.ts"
+    },
+    "dependencies": {
+        "bullmq": "^6.3.11",
+        "express": "^5.2.1",
+        "ioredis": "^5.11.1",
+        "nodemailer": "^10.0.15",
+        "pg": "^8.23.1",
+        "piscina": "^5.3.2",
+        "reflect-metadata": "^0.2.2",
+        "socket.io": "^4.8.4",
+        "typeorm": "^1.1.1",
+        "winston": "^3.19.0",
+        "zod": "^4.6.5"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.6",
+        "@types/node": "^26.6.4",
+        "@types/nodemailer": "^8.0.2",
+        "autocannon": "^8.0.0",
+        "socket.io-client": "^4.8.4",
+        "tsx": "^4.23.15",
+        "typescript": "^7.0.2"
+    }
+}

@@ -1,0 +1,73 @@
+okay im restarting after a couple of days
+
+
+lemme put out certain stuff that I've learned till now
+
+
+JS - interpreted dynamically typed language
+
+initially created for browsers so its async first
+
+primitives - number, string (no chars), array, object, null, undefined, nan, symbol
+
+map, reduce, filter - useful functions
+
+var, let, const - to declare variables
+let for vars and const for constants
+var is an old syntax which allows us to redeclare - avoid this unless required
+hoisting allows us to use a variable b4 declaring it - not really sure whats the point of this tho? 
+also you can declare variables without var / let ig but ill be global
+
+functions are first class citizens - meaning they are just like variables and can be passed around
+this allows us to do lot of useful stuff like 
+closures - can have truly private like variables, decorators
+currying - preloading functions with values for certain arguments
+
+classes
+just public and #private properties (no protected)
+constuctor() and no descrutor
+
+... - used for both spread and collecting
+
+node
+its the engine (runtime) which runs js outside the browser (its a part of V8 i think?) - so this is comparable to a interpreter?
+
+since js is async first, function calls don't wait by default
+like if you call a function and have something below that
+say fn1(); let x = 5; the next statements do not wait untill the function completes - this feels like the biggest change coming to js
+cos out of all the languages i have learnt - java, c, cpp, php, python - none has this behaviour
+but i dont think this is a big issue 
+
+so to work around this, one possible approach is to pass another function to the calling function and ask it to execute that once it does whatever its original purpose is - a callback
+but this can quickly lead into multiple levels of nesting cos the callback itself might need callback and so on
+also you might need like multiple callbacks like one for success, one for failure, one for error etc
+
+so to avoid this "pyramid of doom" - js gives us a native object, Promise
+Promise basically represents the status of execution of a certain event?
+it has 3 states - pending, fulfilled, rejected
+it will have 2 params, resolve - basically return, reject - also return but more like return if error or return and change state to rejected?
+you can chain to this like .then(), .finally(), .catch
+
+lastly you have async await - this is mostly syntactic sugar of Promises 
+allows us to write normal sync code without doing all the async gymnastics
+
+
+event loop
+node is a single threaded runtime - meaning all requests are handled by a single thread (of the node process)
+why? - the assumption seems to be that, most modern web apps are io bounded 
+i.e they mostly wait for io dependent operations like waiting for a db, network packets, etc.
+so instead of waiting idly blocking useful compute resources, the idea is to put it aside and work on other computational stuff (requests)
+so this might not be ideal for cpu heavy tasks - altho ig you can move that stuff to separate worker threads?
+so node allows us to scale to a large number of requests with a single thread since it concurrently processes everything efficiently
+
+why not go for multiple threads?
+threads/processes themselves take up useful resources which in turn can be used for something else
+starting / stopping threads are expensive
+you need to write threadsafe code (altho i dont think node by itself provides threadsafety)
+
+so there are micro and macro tasks with their own queues
+the event loop checks these queues for any tasks and executes them
+after each macro task, micro q is checked and fully executed
+
+
+
